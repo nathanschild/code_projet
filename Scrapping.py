@@ -2,15 +2,10 @@
 """
 Created on Thu Feb 29 12:27:31 2024
 
-@author: natha
+@author: nathan , zoé et sarah
 """
 
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Feb 28 14:56:56 2024
 
-@author: natha
-"""
 
 import requests
 from bs4 import BeautifulSoup
