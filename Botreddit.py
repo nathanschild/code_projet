@@ -17,7 +17,7 @@ reddit = praw.Reddit(client_id='ORjfzbSg3Lwdda56vMIl2w',
 
 # Créer une fonction pour poster sur Reddit
 def poster_resultats_sur_reddit(resultats):
-    subreddit = reddit.subreddit('footballM1SE')  # Remplacez 'NomDuSubreddit' par le nom du subreddit où vous voulez publier
+    subreddit = reddit.subreddit('footballM1SE')  
     title = "Résultats des matchs de football"
     subreddit.submit(title, selftext=resultats, flair_id='488ba704-eb95-11ee-8165-56a069b14437')
 
