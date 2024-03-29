@@ -27,7 +27,9 @@ iv) Une extension supplémentaire à envisager est de faire en sorte qu'avant le
 Pour exécuter le code, veuillez suivre les instructions fournies dans chaque script. Assurez-vous également de créer une application sur Reddit et de configurer les informations d'authentification dans le script Botreddit.py. Quelques pistes afin de vous aider :
 
 i) Il convient de changer l'user agent, vous pourrez trouver le vôtre ici : https://www.whatismybrowser.com/detect/what-is-my-user-agent/.
+
 ii) Pensez à changer le chemin du fichier excel créé.
+
 iii) N'oubliez pas d'installer toutes les bibliothèques nécessaires : vous pouvez le faire en utilisant `pip install`.
 
 ## Bibliothèques et logiciels utilisés
