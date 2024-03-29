@@ -4,11 +4,11 @@ MEHIYDINNE Sarah, SCHILD Nathan & SOMMER Zoé
 Master APE 1ère année
 UE Techniques de programmation
  
-# Introduction
+## Introduction
 
 Ce document accompagne le projet de M1 réalisé dans le cadre de l'UE Techniques de Programmation. Ce projet vise à automatiser la collecte et la publication des résultats des matchs de football de la Premier League pour la saison 2023-2024. 
 
-# Etapes du code
+## Etapes du code
 
 L'objectif principal de ce projet est de créer un système automatisé qui récupère les scores des matchs de football de la Premier League à partir du site Web de Skysports, puis les publie régulièrement sur le réseau social Reddit. Plus précisément, le projet est divisé en trois étapes principales :
 
@@ -20,7 +20,7 @@ iii) Enfin, le but final était d'automatiser l'application afin que le bot redd
 
 iv) Une extension supplémentaire à envisager est de faire en sorte qu'avant les matchs, le bot puisse réaliser des prévisions.
 
-# Bibliothèques utilisées 
+## Bibliothèques utilisées 
 
 - Python
 - BeautifulSoup (pour le scrapping)
