@@ -8,7 +8,7 @@ UE Techniques de programmation
  
 ## Introduction
 
-Ce document accompagne le projet de M1 réalisé dans le cadre de l'UE Techniques de Programmation. Ce projet vise à automatiser la collecte et la publication des résultats des matchs de football de la Premier League pour la saison 2023-2024. 
+Ce document accompagne le projet réalisé dans le cadre de l'UE Techniques de Programmation. L'objectif principal de ce projet est d'automatiser la collecte et la publication des résultats des matchs de football de la Premier League pour la saison 2023-2024. Cela permettra aux passionnés de football de suivre facilement les derniers résultats et de participer à des discussions sur Reddit. En utilisant des techniques de scraping et d'interaction avec l'API Reddit, nous avons développé un système qui récupère automatiquement les résultats des matchs et les publie sur un subreddit dédié.
 
 ## Etapes du code
 
@@ -22,6 +22,14 @@ iii) Enfin, le but final était d'automatiser l'application afin que le bot redd
 
 iv) Une extension supplémentaire à envisager est de faire en sorte qu'avant les matchs, le bot puisse réaliser des prévisions.
 
+## Comment exécuter le code ?
+
+Pour exécuter le code, veuillez suivre les instructions fournies dans chaque script. Assurez-vous également de créer une application sur Reddit et de configurer les informations d'authentification dans le script Botreddit.py. Quelques pistes afin de vous aider :
+
+i) Il convient de changer l'user agent, vous pourrez trouver le vôtre ici : https://www.whatismybrowser.com/detect/what-is-my-user-agent/.
+ii) Pensez à changer le chemin du fichier excel créé.
+iii) N'oubliez pas d'installer toutes les bibliothèques nécessaires : vous pouvez le faire en utilisant `pip install`.
+
 ## Bibliothèques et logiciels utilisés
 
 Le projet utilise les bibliothèques suivantes :
@@ -34,4 +42,6 @@ Le projet utilise les bibliothèques suivantes :
 - `schedule`
 - `plyer.notification`
 - `praw` (Python Reddit API Wrapper, pour interagir avec l'API Reddit)
+
+Pour toute question ou suggestion, n'hésitez pas à nous contacter.
 
