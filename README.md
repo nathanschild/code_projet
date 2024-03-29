@@ -1,7 +1,9 @@
 # Explication des objectifs du projet
 
 MEHIYDINNE Sarah, SCHILD Nathan & SOMMER Zoé
+
 Master APE 1ère année
+
 UE Techniques de programmation
  
 ## Introduction
