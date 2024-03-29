@@ -68,8 +68,12 @@ def extract_match_date(soup):
 
 # Function to extract team names
 def extract_team_names(soup):
-    team_names_tag = soup.find('p', {'class': 'sdc-site-match-header__detail-fixture'})
-    return team_names_tag.text.split(' vs ') if team_names_tag else [None, None]
+    team_names_tag = soup.find_all('span', {'class': 'sdc-site-match-header__team-name-block-target'})
+    if len(team_names_tag) == 2:
+        team_names = [tag.text.strip() for tag in team_names_tag]
+        return team_names
+    return [None, None]
+
 
 # Function to extract scores
 def extract_scores(soup):
@@ -103,7 +107,7 @@ def main():
     match_data_list = []
 
     # Scrape match details from each match
-    while match_number <= 482971:
+    while match_number <= 482592:
         match_url = base_url + f"{match_number}/"
         match_data = scrape_match_details(match_url)
         match_data_list.append(match_data)
