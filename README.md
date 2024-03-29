@@ -22,12 +22,16 @@ iii) Enfin, le but final était d'automatiser l'application afin que le bot redd
 
 iv) Une extension supplémentaire à envisager est de faire en sorte qu'avant les matchs, le bot puisse réaliser des prévisions.
 
-## Bibliothèques utilisées 
+## Bibliothèques et logiciels utilisés
 
-- Python
-- BeautifulSoup (pour le scrapping)
-- PRAW (Python Reddit API Wrapper, pour interagir avec l'API Reddit)
-- Pandas (pour manipuler les données)
-- Requests (pour effectuer des requêtes HTTP)
-
+Le projet utilise les bibliothèques suivantes :
+- `requests`
+- `BeautifulSoup` (pour le scrapping)
+- `re`
+- `pandas`
+- `os`
+- `time`
+- `schedule`
+- `plyer.notification`
+- `praw` (Python Reddit API Wrapper, pour interagir avec l'API Reddit)
 
