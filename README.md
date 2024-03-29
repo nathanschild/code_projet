@@ -1,4 +1,4 @@
-# Explication des objectifs du projet
+# Automatisation de la Publication des Résultats de la Premier League sur Reddit
 
 MEHIYDINNE Sarah, SCHILD Nathan & SOMMER Zoé
 
