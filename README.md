@@ -26,9 +26,9 @@ iv) Une extension supplémentaire à envisager est de faire en sorte qu'avant le
 
 Pour exécuter le code, veuillez suivre les instructions fournies dans chaque script. Assurez-vous également de créer une application sur Reddit et de configurer les informations d'authentification dans le script Botreddit.py. Quelques pistes afin de vous aider :
 
-i) Il convient de changer l'user agent, vous pourrez trouver le vôtre ici : https://www.whatismybrowser.com/detect/what-is-my-user-agent/.
+i) Dans un premier temps, veuillez lancer le code `Scrapping.py` présent sur la github. Il convient de changer l'user agent, vous pourrez trouver le vôtre ici : https://www.whatismybrowser.com/detect/what-is-my-user-agent/. Pensez à changer le chemin du fichier excel créé.
 
-ii) Pensez à changer le chemin du fichier excel créé.
+ii) Par la suite, il faudra lancer le code `Botreddit.py`, cela générera automatiquement un post sur votre subreddit. Pensez à créer un subreddit et une application reddit.
 
 iii) N'oubliez pas d'installer toutes les bibliothèques nécessaires : vous pouvez le faire en utilisant `pip install`.
 
