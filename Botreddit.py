@@ -91,6 +91,7 @@ def extract_team_stats(stats_tag, team_type):
 
     return team_stats
 
+
 def post_match_results_on_reddit(resultats):
     # Initialize PRAW with your credentials
     reddit = praw.Reddit(client_id='ORjfzbSg3Lwdda56vMIl2w',
@@ -105,26 +106,39 @@ def post_match_results_on_reddit(resultats):
     # Title for the Reddit post
     title = "Résultats des matchs de football"
     
-    # Formatting match results
-    match_results = []
-    for index, row in resultats.iterrows():
-        match_result = f"{row['Teams']} : {row['Score Home']} - {row['Score Away']}"
-        match_results.append(match_result)
-        
-    # Adding a comment for each match result
-    match_comments = []
-    for index, row in resultats.iterrows():
-        winner = row['Teams'].split('vs')[0].strip() if row['Score Home'] > row['Score Away'] else row['Teams'].split('vs')[1].strip()
-        comment = f"Et une belle victoire pour {winner} !"
-        match_comments.append(comment)
+    # Create a string to store the post content
+    post_content = ""
     
-    # Combining match results and comments
-    formatted_results = [f"{match_results[i]} : {match_comments[i]}" for i in range(len(match_results))]
-    results_text = "\n\n".join(formatted_results)
+    # Iterate through each row in the DataFrame
+    for index, row in resultats.iterrows():
+        # Extract the date of the match from the DataFrame
+        match_date = row['Match Date']
+        
+        # Format the match date
+        formatted_date = pd.to_datetime(match_date).strftime('%Y-%m-%d')
+        
+        # Format the match result
+        match_result = f"{row['Teams']} : {row['Score Home']} - {row['Score Away']}"
+        
+        # Determine the winner or if it's a draw
+        if row['Score Home'] > row['Score Away']:
+            winner = row['Teams'].split('vs')[0].strip()
+            comment = f"Et une belle victoire pour {winner} !"
+        elif row['Score Home'] < row['Score Away']:
+            winner = row['Teams'].split('vs')[1].strip()
+            comment = f"Et une belle victoire pour {winner} !"
+        else:
+            comment = "Dommage, les deux équipes n'ont pas su se départager."
+        
+        # Construct the match details
+        match_details = f"Match du {formatted_date}\n{match_result}\n{comment}\n\n"
+        
+        # Add the match details to the post content
+        post_content += match_details
     
     # Submit the post
-    subreddit.submit(title, selftext=results_text, flair_id='488ba704-eb95-11ee-8165-56a069b14437')
-
+    subreddit.submit(title, selftext=post_content.strip(), flair_id='488ba704-eb95-11ee-8165-56a069b14437')
+   
 def check_for_new_data_and_post_on_reddit():
     # Specify the path to the existing Excel file
     file_path = "C:/Users/natha/OneDrive/Bureau/M1/resultats_matchs/match_stats.xlsx"
