@@ -146,7 +146,7 @@ def check_for_new_data_and_post_on_reddit():
     # Scrape new match details
     new_match_data_list = []
     match_number = 482591
-    while match_number <= 482881:
+    while match_number <= 482883:
         match_url = base_url + f"{match_number}/"
         match_data = scrape_match_details(match_url)
         new_match_data_list.append(match_data)
