@@ -1,0 +1,16 @@
+---
+title: "Automatisation de la publication des résultats de la Premier League sur Reddit"
+author: "Mehiydinne Sarah, Schild Nathan & Sommer Zoé"
+date: "2024-03-30"
+output: beamer_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Présentation du projet
+
+## Motivations
+
+## 
