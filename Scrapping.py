@@ -107,7 +107,7 @@ def main():
     match_data_list = []
 
     # Scrape match details from each match
-    while match_number <= 482592:
+    while match_number <= 482880:
         match_url = base_url + f"{match_number}/"
         match_data = scrape_match_details(match_url)
         match_data_list.append(match_data)
