@@ -5,13 +5,13 @@ Created on Sun Mar 31 11:18:54 2024
 @author: natha
 """
 
-import requests
-from bs4 import BeautifulSoup
-import re
-import pandas as pd
 import os
-from plyer import notification
+import re
 import praw
+import requests
+import pandas as pd
+from bs4 import BeautifulSoup
+from plyer import notification
 
 # Base URL
 base_url = 'https://www.skysports.com/football/burnley-vs-manchester-city/stats/'
@@ -23,6 +23,15 @@ user_agent = {
 
 # Function to get the HTML of the page
 def get_page(urlpage):
+    """
+    Function to retrieve the HTML content of a webpage.
+
+    Parameters:
+    urlpage (str): The URL of the webpage.
+
+    Returns:
+    soup: The BeautifulSoup object containing the parsed HTML.
+    """
     # Avoid getting banned
     # Get the HTML of the webpage
     print(f"Requesting {urlpage}")
@@ -34,6 +43,15 @@ def get_page(urlpage):
 
 # Function to scrape match details
 def scrape_match_details(match_url):
+    """
+    Function to scrape match details from a given match URL.
+
+    Parameters:
+    match_url (str): The URL of the match.
+
+    Returns:
+    dict: A dictionary containing the scraped match details.
+    """
     soup = get_page(match_url)
 
     # Extracting match details
@@ -63,11 +81,29 @@ def scrape_match_details(match_url):
 
 # Function to extract match date
 def extract_match_date(soup):
+    """
+    Function to extract the match date from the parsed HTML.
+
+    Parameters:
+    soup: The BeautifulSoup object containing the parsed HTML.
+
+    Returns:
+    str: The extracted match date.
+    """
     match_date_tag = soup.find('time', {'class': 'sdc-site-match-header__detail-time'})
     return match_date_tag.get('aria-label').split(',')[1].strip() if match_date_tag else None
 
 # Function to extract team names
 def extract_team_names(soup):
+    """
+    Function to extract the team names from the parsed HTML.
+
+    Parameters:
+    soup: The BeautifulSoup object containing the parsed HTML.
+
+    Returns:
+    list: A list containing the extracted team names.
+    """
     team_names_tag = soup.find_all('span', {'class': 'sdc-site-match-header__team-name-block-target'})
     if len(team_names_tag) == 2:
         team_names = [tag.text.strip() for tag in team_names_tag]
@@ -76,16 +112,44 @@ def extract_team_names(soup):
 
 # Function to extract scores
 def extract_scores(soup):
+    """
+    Function to extract the match scores from the parsed HTML.
+
+    Parameters:
+    soup: The BeautifulSoup object containing the parsed HTML.
+
+    Returns:
+    tuple: A tuple containing the extracted home and away scores.
+    """
     score_home_tag = soup.find('span', {'data-update': 'score-home'})
     score_away_tag = soup.find('span', {'data-update': 'score-away'})
     return score_home_tag.text.strip() if score_home_tag else None, score_away_tag.text.strip() if score_away_tag else None
 
 # Function to extract attendance
 def extract_attendance(soup):
+    """
+    Function to extract the match attendance from the parsed HTML.
+
+    Parameters:
+    soup: The BeautifulSoup object containing the parsed HTML.
+
+    Returns:
+    str: The extracted attendance.
+    """
     attendance_tag = soup.find('span', {'class': 'sdc-site-match-header__detail-attendance'})
     return attendance_tag.contents[-1].strip() if attendance_tag else None
 
 def extract_team_stats(stats_tag, team_type):
+    """
+    Function to extract team statistics from the parsed HTML.
+
+    Parameters:
+    stats_tag: The BeautifulSoup object containing the parsed HTML for team statistics.
+    team_type (str): The type of team ('Home' or 'Away').
+
+    Returns:
+    dict: A dictionary containing the extracted team statistics.
+    """
     stats_labels = ['Possession', 'Tirs', 'Tirs Cadres', 'Tirs Non Cadres', 'Blocked Shots', 
                     'Completed Passes', 'Clear Cut', 'Corner', 'Offsides', 'Tackles Completed', 
                     'Aerial Duels', 'Saves', 'Fouls', 'Fouls Won', 'Yellow Cards', 'Red Cards']
@@ -100,6 +164,15 @@ def extract_team_stats(stats_tag, team_type):
 
 # Fonction pour récupérer le commentaire associé à l'équipe gagnante
 def commentaire_equipe_gagnante(equipe):
+    """
+    Function to retrieve the comment associated with the winning team.
+
+    Parameters:
+    equipe (str): The name of the winning team.
+
+    Returns:
+    str: The comment associated with the winning team.
+    """
     commentaires_gagnants = {
         'Arsenal': "Magnifique Victoire, ils ont dégainé l’artillerie !",
         'Aston Villa': "Martin vit dans une villa, assurément la victoire est à Aston !",
@@ -118,7 +191,7 @@ def commentaire_equipe_gagnante(equipe):
         'Newcastle United': "Belle défense de leur château sur ce match !",
         'Nottingham Forest': "A croire qu’ils ont les clés de la forêt de la victoire !",
         'Sheffield United': "Des chefs ! Bravo pour leur Victoire !",
-        'Tottenham': "Tellement fort, on leur décernerait un totem pour cette victoire !",
+        'Tottenham Hotspur': "Tellement fort, on leur décernerait un totem pour cette victoire !",
         'West Ham United': "Le soleil s’est à l’ouest aujourd’hui ! Bravo !",
         'Wolverhampton': "Les loups sont de sortis ! Bravo !"
     }
@@ -126,6 +199,15 @@ def commentaire_equipe_gagnante(equipe):
 
 # Fonction pour récupérer le commentaire associé à l'équipe perdante
 def commentaire_equipe_perdante(equipe):
+    """
+    Function to retrieve the comment associated with the losing team.
+
+    Parameters:
+    equipe (str): The name of the losing team.
+
+    Returns:
+    str: The comment associated with the losing team.
+    """
     commentaires_perdants = {
         'Arsenal': "Ils n’avaient plus que des balles à blanc malheureusement !",
         'Aston Villa': "Martin a déménagé de la villa, emmenant avec lui la victoire d’Aston",
@@ -150,6 +232,12 @@ def commentaire_equipe_perdante(equipe):
     return commentaires_perdants.get(equipe, "Équipe non trouvée !")
 
 def post_match_results_on_reddit(resultats):
+    """
+    Function to post match results on Reddit.
+
+    Parameters:
+    resultats (DataFrame): The DataFrame containing match results.
+    """
     # Initialize PRAW with your credentials
     reddit = praw.Reddit(client_id='ORjfzbSg3Lwdda56vMIl2w',
                          client_secret='2qLaVCWTNhGWOGtCI6DqB6a27Ta6nQ',
@@ -194,7 +282,7 @@ def post_match_results_on_reddit(resultats):
             comment_loser = ""
         
         # Construct the match details
-        match_details = f"Match du {formatted_date}\n{match_result}\n\n{comment_winner}{comment_loser}\n{'-'*30}\n\n"
+        match_details = f"Match du {formatted_date}\n{match_result}\n\n{comment_winner}\n{comment_loser}\n{'-'*30}\n\n"
         
         # Add the match details to the post content
         post_content += match_details
@@ -204,13 +292,16 @@ def post_match_results_on_reddit(resultats):
 
 
 def check_for_new_data_and_post_on_reddit():
+    """
+    Function to check for new match data and post on Reddit.
+    """
     # Specify the path to the existing Excel file
     file_path = "C:/Users/natha/OneDrive/Bureau/M1/resultats_matchs/match_stats.xlsx"
 
     # Scrape new match details
     new_match_data_list = []
     match_number = 482880
-    while match_number <= 482888:
+    while match_number <= 482895:
         match_url = base_url + f"{match_number}/"
         match_data = scrape_match_details(match_url)
         new_match_data_list.append(match_data)
