@@ -115,11 +115,11 @@ def commentaire_equipe_gagnante(equipe):
         'Luton Town': "Aussi malicieux que des lutins !",
         'Manchester City': "Le ciel fut bleu et accueillant, belle victoire pour les skyblues",
         'Manchester United': "Ils se sont unis pour la victoire ! Bravo !",
-        'Newcastle': "Belle défense de leur château sur ce match !",
+        'Newcastle United': "Belle défense de leur château sur ce match !",
         'Nottingham Forest': "A croire qu’ils ont les clés de la forêt de la victoire !",
         'Sheffield United': "Des chefs ! Bravo pour leur Victoire !",
         'Tottenham': "Tellement fort, on leur décernerait un totem pour cette victoire !",
-        'West Ham': "Le soleil s’est à l’ouest aujourd’hui ! Bravo !",
+        'West Ham United': "Le soleil s’est à l’ouest aujourd’hui ! Bravo !",
         'Wolverhampton': "Les loups sont de sortis ! Bravo !"
     }
     return commentaires_gagnants.get(equipe, "Équipe non trouvée !")
@@ -141,10 +141,10 @@ def commentaire_equipe_perdante(equipe):
         'Luton Town': "Les lutins farceurs n’ont pas été très malicieux …",
         'Manchester City': "Des nuages sont venus couvrir le ciel bleu … Dommage !",
         'Manchester United': "Défaite de Man chest er (ils n’étaient pas unis).",
-        'Newcastle': "Ils ont acheté un château en Espagne, pas de victoire en Angleterre !",
+        'Newcastle United': "Ils ont acheté un château en Espagne, pas de victoire en Angleterre !",
         'Nottingham Forest': "A croire que la balle s’est perdu au fond des bois …",
         'Tottenham': "Ils n’ont pas réussi à éperonner la victoire, dommage …",
-        'West Ham': "Dommage ! L’équipe était à l’ouest pendant ce match …",
+        'West Ham United': "Dommage ! L’équipe était à l’ouest pendant ce match …",
         'Wolverhampton': "Trop dur à prononcer, défaite méritée …"
     }
     return commentaires_perdants.get(equipe, "Équipe non trouvée !")
@@ -210,7 +210,7 @@ def check_for_new_data_and_post_on_reddit():
     # Scrape new match details
     new_match_data_list = []
     match_number = 482880
-    while match_number <= 482885:
+    while match_number <= 482888:
         match_url = base_url + f"{match_number}/"
         match_data = scrape_match_details(match_url)
         new_match_data_list.append(match_data)
