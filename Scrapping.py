@@ -2,10 +2,8 @@
 """
 Created on Thu Feb 29 12:27:31 2024
 
-@author: nathan , zoé et sarah M
+@author: nathan, zoé, et sarah M
 """
-
-
 
 import requests
 from bs4 import BeautifulSoup
@@ -23,6 +21,15 @@ user_agent = {
 
 # Function to get the HTML of the page
 def get_page(urlpage):
+    """
+    Function to get the HTML of a webpage.
+
+    Parameters:
+    urlpage (str): The URL of the webpage.
+
+    Returns:
+    BeautifulSoup: Parsed HTML of the webpage.
+    """
     # Avoid getting banned
     # Get the HTML of the webpage
     print(f"Requesting {urlpage}")
@@ -34,6 +41,15 @@ def get_page(urlpage):
 
 # Function to scrape match details
 def scrape_match_details(match_url):
+    """
+    Function to scrape match details from a given URL.
+
+    Parameters:
+    match_url (str): The URL of the match.
+
+    Returns:
+    dict: Match details.
+    """
     soup = get_page(match_url)
 
     # Extracting match details
@@ -63,30 +79,76 @@ def scrape_match_details(match_url):
 
 # Function to extract match date
 def extract_match_date(soup):
+    """
+    Function to extract the match date from HTML.
+
+    Parameters:
+    soup (BeautifulSoup): Parsed HTML of the webpage.
+
+    Returns:
+    str: Match date.
+    """
     match_date_tag = soup.find('time', {'class': 'sdc-site-match-header__detail-time'})
     return match_date_tag.get('aria-label').split(',')[1].strip() if match_date_tag else None
 
 # Function to extract team names
 def extract_team_names(soup):
+    """
+    Function to extract team names from HTML.
+
+    Parameters:
+    soup (BeautifulSoup): Parsed HTML of the webpage.
+
+    Returns:
+    list: List containing team names.
+    """
     team_names_tag = soup.find_all('span', {'class': 'sdc-site-match-header__team-name-block-target'})
     if len(team_names_tag) == 2:
         team_names = [tag.text.strip() for tag in team_names_tag]
         return team_names
     return [None, None]
 
-
 # Function to extract scores
 def extract_scores(soup):
+    """
+    Function to extract scores from HTML.
+
+    Parameters:
+    soup (BeautifulSoup): Parsed HTML of the webpage.
+
+    Returns:
+    tuple: Scores for home and away teams.
+    """
     score_home_tag = soup.find('span', {'data-update': 'score-home'})
     score_away_tag = soup.find('span', {'data-update': 'score-away'})
     return score_home_tag.text.strip() if score_home_tag else None, score_away_tag.text.strip() if score_away_tag else None
 
 # Function to extract attendance
 def extract_attendance(soup):
+    """
+    Function to extract attendance from HTML.
+
+    Parameters:
+    soup (BeautifulSoup): Parsed HTML of the webpage.
+
+    Returns:
+    str: Attendance.
+    """
     attendance_tag = soup.find('span', {'class': 'sdc-site-match-header__detail-attendance'})
     return attendance_tag.contents[-1].strip() if attendance_tag else None
 
+# Function to extract team stats
 def extract_team_stats(stats_tag, team_type):
+    """
+    Function to extract team statistics from HTML.
+
+    Parameters:
+    stats_tag (list): List of HTML tags containing team statistics.
+    team_type (str): Type of team ('Home' or 'Away').
+
+    Returns:
+    dict: Dictionary containing team statistics.
+    """
     stats_labels = ['Possession', 'Tirs', 'Tirs Cadres', 'Tirs Non Cadres', 'Blocked Shots', 
                     'Completed Passes', 'Clear Cut', 'Corner', 'Offsides', 'Tackles Completed', 
                     'Aerial Duels', 'Saves', 'Fouls', 'Fouls Won', 'Yellow Cards', 'Red Cards']
@@ -101,6 +163,9 @@ def extract_team_stats(stats_tag, team_type):
 
 # Function to main
 def main():
+    """
+    Main function to scrape match details and save them to Excel.
+    """
     # Initial match number
     match_number = 482591
     
