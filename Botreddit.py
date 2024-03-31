@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sun Mar 31 11:18:54 2024
+
+@author: natha
+"""
+
 import requests
 from bs4 import BeautifulSoup
 import re
@@ -91,6 +98,56 @@ def extract_team_stats(stats_tag, team_type):
 
     return team_stats
 
+# Fonction pour récupérer le commentaire associé à l'équipe gagnante
+def commentaire_equipe_gagnante(equipe):
+    commentaires_gagnants = {
+        'Arsenal': "Magnifique Victoire, ils ont dégainé l’artillerie !",
+        'Aston Villa': "Martin vit dans une villa, assurément la victoire est à Aston !",
+        'Bournemouth': "Soirée mousse pour fêter cette victoire !",
+        'Brentford': "Aussi rapide et puissant qu’une bonne vieille Ford ! Bravo !",
+        'Brighton and Hove Albion': "Encore une victoire brillante !",
+        'Burnley': "Ils ont tout brulé sur leur passage ! Bravo !",
+        'Chelsea': "Bravo ! De vrais guerrier en mer !",
+        'Crystal Palace': "Une victoire aussi belle qu’un million de diamant !",
+        'Everton': "Ils ont donné le ton sur ce match !",
+        'Fulham': "Une belle âme de vainqueur ! Bravo !",
+        'Liverpool': "Les reds ont passé le feu au rouge et ont décroché la victoire !",
+        'Luton Town': "Aussi malicieux que des lutins !",
+        'Manchester City': "Le ciel fut bleu et accueillant, belle victoire pour les skyblues",
+        'Manchester United': "Ils se sont unis pour la victoire ! Bravo !",
+        'Newcastle': "Belle défense de leur château sur ce match !",
+        'Nottingham Forest': "A croire qu’ils ont les clés de la forêt de la victoire !",
+        'Sheffield United': "Des chefs ! Bravo pour leur Victoire !",
+        'Tottenham': "Tellement fort, on leur décernerait un totem pour cette victoire !",
+        'West Ham': "Le soleil s’est à l’ouest aujourd’hui ! Bravo !",
+        'Wolverhampton': "Les loups sont de sortis ! Bravo !"
+    }
+    return commentaires_gagnants.get(equipe, "Équipe non trouvée !")
+
+# Fonction pour récupérer le commentaire associé à l'équipe perdante
+def commentaire_equipe_perdante(equipe):
+    commentaires_perdants = {
+        'Arsenal': "Ils n’avaient plus que des balles à blanc malheureusement !",
+        'Aston Villa': "Martin a déménagé de la villa, emmenant avec lui la victoire d’Aston",
+        'Bournemouth': "Trop dur à prononcer, défaite mériter …",
+        'Brentford': "Le fordisme n’était pas très utile sur le terrain …",
+        'Brighton and Hove Albion': "Aveuglé par le soleil, ils n’ont pas réussi à atteindre la victoire …",
+        'Burnley': "Ils ont été brulés …",
+        'Chelsea': "Malheureusement la houle fut tumultueuse …",
+        'Crystal Palace': "Malgré un palace, le cristal reste une chose fragile … Dommage !",
+        'Everton': "Ils ont chanté faux cette fois ci, dommage …",
+        'Fulham': "Ils ont rendu l’âme …",
+        'Liverpool': "Aïe aïe aïe, les reds ont vu rouge !",
+        'Luton Town': "Les lutins farceurs n’ont pas été très malicieux …",
+        'Manchester City': "Des nuages sont venus couvrir le ciel bleu … Dommage !",
+        'Manchester United': "Défaite de Man chest er (ils n’étaient pas unis).",
+        'Newcastle': "Ils ont acheté un château en Espagne, pas de victoire en Angleterre !",
+        'Nottingham Forest': "A croire que la balle s’est perdu au fond des bois …",
+        'Tottenham': "Ils n’ont pas réussi à éperonner la victoire, dommage …",
+        'West Ham': "Dommage ! L’équipe était à l’ouest pendant ce match …",
+        'Wolverhampton': "Trop dur à prononcer, défaite méritée …"
+    }
+    return commentaires_perdants.get(equipe, "Équipe non trouvée !")
 
 def post_match_results_on_reddit(resultats):
     # Initialize PRAW with your credentials
@@ -123,22 +180,31 @@ def post_match_results_on_reddit(resultats):
         # Determine the winner or if it's a draw
         if row['Score Home'] > row['Score Away']:
             winner = row['Teams'].split('vs')[0].strip()
-            comment = f"Et une belle victoire pour {winner} !"
+            comment_winner = f"{winner} : {commentaire_equipe_gagnante(winner)}"
+            loser = row['Teams'].split('vs')[1].strip()
+            comment_loser = f"{loser} : {commentaire_equipe_perdante(loser)}"
         elif row['Score Home'] < row['Score Away']:
             winner = row['Teams'].split('vs')[1].strip()
-            comment = f"Et une belle victoire pour {winner} !"
+            comment_winner = f"{winner} : {commentaire_equipe_gagnante(winner)}"
+            loser = row['Teams'].split('vs')[0].strip()
+            comment_loser = f"{loser} : {commentaire_equipe_perdante(loser)}"
         else:
-            comment = "Dommage, les deux équipes n'ont pas su se départager."
+            # Match nul
+            comment_winner = "Match nul : Dommage les deux équipes n'ont pas su se départager"
+            comment_loser = ""
         
         # Construct the match details
-        match_details = f"Match du {formatted_date}\n{match_result}\n{comment}\n\n"
+        if comment_loser:
+            match_details = f"Match du {formatted_date}\n{match_result}\n\n{comment_winner}\n{comment_loser}\n\n"
+        else:
+            match_details = f"Match du {formatted_date}\n{match_result}\n\n{comment_winner}\n\n"
         
         # Add the match details to the post content
         post_content += match_details
     
     # Submit the post
     subreddit.submit(title, selftext=post_content.strip(), flair_id='488ba704-eb95-11ee-8165-56a069b14437')
-   
+
 def check_for_new_data_and_post_on_reddit():
     # Specify the path to the existing Excel file
     file_path = "C:/Users/natha/OneDrive/Bureau/M1/resultats_matchs/match_stats.xlsx"
@@ -146,7 +212,7 @@ def check_for_new_data_and_post_on_reddit():
     # Scrape new match details
     new_match_data_list = []
     match_number = 482880
-    while match_number <= 482883:
+    while match_number <= 482885:
         match_url = base_url + f"{match_number}/"
         match_data = scrape_match_details(match_url)
         new_match_data_list.append(match_data)
