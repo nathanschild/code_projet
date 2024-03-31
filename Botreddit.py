@@ -180,30 +180,28 @@ def post_match_results_on_reddit(resultats):
         # Determine the winner or if it's a draw
         if row['Score Home'] > row['Score Away']:
             winner = row['Teams'].split('vs')[0].strip()
-            comment_winner = f"{winner} : {commentaire_equipe_gagnante(winner)}"
+            comment_winner = f"{winner} : {commentaire_equipe_gagnante(winner)}\n"
             loser = row['Teams'].split('vs')[1].strip()
-            comment_loser = f"{loser} : {commentaire_equipe_perdante(loser)}"
+            comment_loser = f"{loser} : {commentaire_equipe_perdante(loser)}\n"
         elif row['Score Home'] < row['Score Away']:
             winner = row['Teams'].split('vs')[1].strip()
-            comment_winner = f"{winner} : {commentaire_equipe_gagnante(winner)}"
+            comment_winner = f"{winner} : {commentaire_equipe_gagnante(winner)}\n"
             loser = row['Teams'].split('vs')[0].strip()
-            comment_loser = f"{loser} : {commentaire_equipe_perdante(loser)}"
+            comment_loser = f"{loser} : {commentaire_equipe_perdante(loser)}\n"
         else:
             # Match nul
-            comment_winner = "Match nul : Dommage les deux équipes n'ont pas su se départager"
+            comment_winner = "Match nul : Dommage les deux équipes n'ont pas su se départager\n"
             comment_loser = ""
         
         # Construct the match details
-        if comment_loser:
-            match_details = f"Match du {formatted_date}\n{match_result}\n\n{comment_winner}\n{comment_loser}\n\n"
-        else:
-            match_details = f"Match du {formatted_date}\n{match_result}\n\n{comment_winner}\n\n"
+        match_details = f"Match du {formatted_date}\n{match_result}\n\n{comment_winner}{comment_loser}\n{'-'*30}\n\n"
         
         # Add the match details to the post content
         post_content += match_details
     
     # Submit the post
     subreddit.submit(title, selftext=post_content.strip(), flair_id='488ba704-eb95-11ee-8165-56a069b14437')
+
 
 def check_for_new_data_and_post_on_reddit():
     # Specify the path to the existing Excel file
