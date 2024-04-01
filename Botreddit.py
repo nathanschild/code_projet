@@ -239,14 +239,14 @@ def post_match_results_on_reddit(resultats):
     resultats (DataFrame): The DataFrame containing match results.
     """
     # Initialize PRAW with your credentials
-    reddit = praw.Reddit(client_id='ORjfzbSg3Lwdda56vMIl2w',
-                         client_secret='2qLaVCWTNhGWOGtCI6DqB6a27Ta6nQ',
-                         user_agent='Matchs',
-                         username="Nathes67",
-                         password="Nathan1101/")
+    reddit = praw.Reddit(client_id='6ItPboh5cV1H4BJicJsMmQ',
+                         client_secret='5NaUKxgQtis3V2WRFtijEr15tSivTQ',
+                         user_agent='LPLdesM1SE',
+                         username="Zizipalacios47",
+                         password="Pouettepouettenathan2024!!")
     
     # Specify the subreddit
-    subreddit = reddit.subreddit('footballM1SE')
+    subreddit = reddit.subreddit('LPLdesM1SE')
     
     # Title for the Reddit post
     title = "Résultats des matchs de football"
@@ -288,7 +288,7 @@ def post_match_results_on_reddit(resultats):
         post_content += match_details
     
     # Submit the post
-    subreddit.submit(title, selftext=post_content.strip(), flair_id='488ba704-eb95-11ee-8165-56a069b14437')
+    subreddit.submit(title, selftext=post_content.strip(), flair_id='7bd443ca-f025-11ee-8492-6e1cefd8b484')
 
 
 def check_for_new_data_and_post_on_reddit():
