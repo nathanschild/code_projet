@@ -18,7 +18,7 @@ base_url = 'https://www.skysports.com/football/burnley-vs-manchester-city/stats/
 user_agent = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36 Edg/121.0.0.0'
 }
-
+# User-Agent pour Zoé : Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:124.0) Gecko/20100101 Firefox/124.0
 # Function to get the HTML of the page
 def get_page(urlpage):
     """
@@ -185,7 +185,7 @@ def main():
     # Specify the new path with .xlsx extension
     directory_path = "C:/Users/natha/OneDrive/Bureau/M1/resultats_matchs"
     file_path = os.path.join(directory_path, "match_stats.xlsx")
-
+#directory_path pour Zoé : /Users/zoesommer/Documents/FAC M1/S2/PP/Résultat_Match
     # Check if the directory exists, if not, create it
     if not os.path.exists(directory_path):
         os.makedirs(directory_path)
