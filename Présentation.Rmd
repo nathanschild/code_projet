@@ -15,8 +15,10 @@ knitr::opts_chunk$set(echo = FALSE)
 
 - Ce projet vise à automatiser la publication des résultats de la Premier League.
   - La publication se fait sur le subreddit suivant : <https://www.reddit.com/r/footballM1SE/>.
+  ![Texte alternatif](Photos pour le Markdown/QR_code.png "Accéder du SubReddit")
   - Ce sont les résultats concernant la saison 2023-2024.
 - Les posts sont publiés chaque jour.
+
 
 
 ## Explication des étapes du code
@@ -96,6 +98,14 @@ reddit = praw.Reddit(client_id='/////',
 def check_for_new_data_and_post_on_reddit():
 ```
 
+##Avancement du format du post
+ ![Texte alternatif](Photos pour le Markdown/Essai_1.png "Essai 1")
+
+![Texte alternatif](Photos pour le Markdown/Essai_2.png "Essai 2")
+![Texte alternatif](Photos pour le Markdown/Essai_3.png "Essai 3")
+![Texte alternatif](Photos pour le Markdown/Essai_4.png "Essai 4")
+![Texte alternatif](Photos pour le Markdown/Essai_5.png "Essai 5")
+![Texte alternatif](Photos pour le Markdown/Essai_6.png "Essai 6")
 
 ## La touche d'originalité
 - Une idée a été d'accompagner chaque résultat par un petit commentaire lié aux noms des équipes.
@@ -120,6 +130,8 @@ commentaires_perdants = {
 
 
 ## Points faibles à améliorer
+Comme chaque équipe fait 19 marches, il y a potentiellement 19 défaites ou victoires. Rajouter des blagues.
+
 
 ## Conclusion
 
