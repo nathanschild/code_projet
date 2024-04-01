@@ -1,8 +1,9 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Sun Mar 31 11:18:54 2024
+Created on Sat Mar 30 11:44:31 2024
 
-@author: natha
+@author: sarahmehiyddine
 """
 
 import os
@@ -11,7 +12,6 @@ import praw
 import requests
 import pandas as pd
 from bs4 import BeautifulSoup
-from plyer import notification
 
 # Base URL
 base_url = 'https://www.skysports.com/football/burnley-vs-manchester-city/stats/'
@@ -231,6 +231,44 @@ def commentaire_equipe_perdante(equipe):
     }
     return commentaires_perdants.get(equipe, "Équipe non trouvée !")
 
+def check_for_new_data_and_post_on_reddit():
+    """
+    Function to check for new match data and post on Reddit.
+    """
+    # Specify the path to the existing Excel file
+    file_path = "/Users/sarahmehiyddine/Desktop/Cours/Magistère/M1/S2/Programmation/base.xlsx"
+
+    # Scrape new match details
+    new_match_data_list = []
+    match_number = 482885
+    while match_number <= 482886:
+        match_url = base_url + f"{match_number}/"
+        match_data = scrape_match_details(match_url)
+        new_match_data_list.append(match_data)
+        match_number += 1
+
+    # Create DataFrame from the list of new match data
+    new_df = pd.DataFrame(new_match_data_list)
+    
+    # Replace empty scores with a placeholder value
+    new_df['Score Home'].replace('', 'N/A', inplace=True)
+    new_df['Score Away'].replace('', 'N/A', inplace=True)
+
+    # Check if the Excel file already exists
+    if os.path.exists(file_path):
+        # Load the existing DataFrame from the Excel file
+        existing_df = pd.read_excel(file_path)
+
+        # Check if there are any new rows of data
+        new_rows = new_df[~new_df.isin(existing_df)]
+        if not new_rows.empty:
+            # Post match results on Reddit
+            post_match_results_on_reddit(new_rows)
+    else:
+        # If the Excel file doesn't exist, create it
+        new_df.to_excel(file_path, index=False)
+        print(f"DataFrame created and saved to {file_path}")
+
 def post_match_results_on_reddit(resultats):
     """
     Function to post match results on Reddit.
@@ -239,14 +277,14 @@ def post_match_results_on_reddit(resultats):
     resultats (DataFrame): The DataFrame containing match results.
     """
     # Initialize PRAW with your credentials
-    reddit = praw.Reddit(client_id='6ItPboh5cV1H4BJicJsMmQ',
-                         client_secret='5NaUKxgQtis3V2WRFtijEr15tSivTQ',
-                         user_agent='LPLdesM1SE',
-                         username="Zizipalacios47",
-                         password="Pouettepouettenathan2024!!")
+    reddit = praw.Reddit(client_id='9__BS3an82QsQP3fCWSVbg',
+                         client_secret='UIR6x3qj90I-gMwzGLQtrTWD3C5zbQ',
+                         user_agent='foot',
+                         username="SarahProScrapping",
+                         password="ScrappingForLife123")
     
     # Specify the subreddit
-    subreddit = reddit.subreddit('LPLdesM1SE')
+    subreddit = reddit.subreddit('footballPROJECT')
     
     # Title for the Reddit post
     title = "Résultats des matchs de football"
@@ -265,20 +303,28 @@ def post_match_results_on_reddit(resultats):
         # Format the match result
         match_result = f"{row['Teams']} : {row['Score Home']} - {row['Score Away']}"
         
+        # Initialize winner variable
+        winner = None
+        
         # Determine the winner or if it's a draw
-        if row['Score Home'] > row['Score Away']:
-            winner = row['Teams'].split('vs')[0].strip()
-            comment_winner = f"{winner} : {commentaire_equipe_gagnante(winner)}\n"
-            loser = row['Teams'].split('vs')[1].strip()
-            comment_loser = f"{loser} : {commentaire_equipe_perdante(loser)}\n"
-        elif row['Score Home'] < row['Score Away']:
-            winner = row['Teams'].split('vs')[1].strip()
-            comment_winner = f"{winner} : {commentaire_equipe_gagnante(winner)}\n"
-            loser = row['Teams'].split('vs')[0].strip()
-            comment_loser = f"{loser} : {commentaire_equipe_perdante(loser)}\n"
+        if row['Score Home'] != "" and row['Score Away'] != "":
+            if row['Score Home'] > row['Score Away']:
+                winner = row['Teams'].split('vs')[0].strip()
+                comment_winner = f"{winner} : {commentaire_equipe_gagnante(winner)}\n"
+                loser = row['Teams'].split('vs')[1].strip()
+                comment_loser = f"{loser} : {commentaire_equipe_perdante(loser)}\n"
+            elif row['Score Home'] < row['Score Away']:
+                winner = row['Teams'].split('vs')[1].strip()
+                comment_winner = f"{winner} : {commentaire_equipe_gagnante(winner)}\n"
+                loser = row['Teams'].split('vs')[0].strip()
+                comment_loser = f"{loser} : {commentaire_equipe_perdante(loser)}\n"
+            else:
+                # Match nul
+                comment_winner = "Match nul : Dommage les deux équipes n'ont pas su se départager, vraiment nul ce match !\n"
+                comment_loser = ""
         else:
-            # Match nul
-            comment_winner = "Match nul : Dommage les deux équipes n'ont pas su se départager\n"
+            # Match nul (scores non disponibles)
+            comment_winner = "Match nul : Dommage les deux équipes n'ont pas su se départager, vraiment nul ce match\n"
             comment_loser = ""
         
         # Construct the match details
@@ -288,49 +334,8 @@ def post_match_results_on_reddit(resultats):
         post_content += match_details
     
     # Submit the post
-    subreddit.submit(title, selftext=post_content.strip(), flair_id='7bd443ca-f025-11ee-8492-6e1cefd8b484')
+    subreddit.submit(title, selftext=post_content.strip(), flair_id='09395e38-f03c-11ee-a1b7-96388074f05a')
 
-
-def check_for_new_data_and_post_on_reddit():
-    """
-    Function to check for new match data and post on Reddit.
-    """
-    # Specify the path to the existing Excel file
-    file_path = "C:/Users/natha/OneDrive/Bureau/M1/resultats_matchs/match_stats.xlsx"
-
-    # Scrape new match details
-    new_match_data_list = []
-    match_number = 482884
-    while match_number <= 482886:
-        match_url = base_url + f"{match_number}/"
-        match_data = scrape_match_details(match_url)
-        new_match_data_list.append(match_data)
-        match_number += 1
-
-    # Create DataFrame from the list of new match data
-    new_df = pd.DataFrame(new_match_data_list)
-
-    # Check if the Excel file already exists
-    if os.path.exists(file_path):
-        # Load the existing DataFrame from the Excel file
-        existing_df = pd.read_excel(file_path)
-
-        # Check if there are any new rows of data
-        new_rows = new_df[~new_df.isin(existing_df)].dropna()
-        if not new_rows.empty:
-            # Send notification
-            notification.notify(
-                title="New data added",
-                message="New match data has been added to the Excel file.",
-                timeout=10
-            )
-            
-            # Post match results on Reddit
-            post_match_results_on_reddit(new_rows)
-    else:
-        # If the Excel file doesn't exist, create it
-        new_df.to_excel(file_path, index=False)
-        print(f"DataFrame created and saved to {file_path}")
-        
 # Execute the function to check for new data and post on Reddit
 check_for_new_data_and_post_on_reddit()
+
