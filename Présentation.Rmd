@@ -98,13 +98,27 @@ reddit = praw.Reddit(client_id='/////',
 def check_for_new_data_and_post_on_reddit():
 ```
 
-##Avancement du format du post
+## Avancement du format du post
+
  ![Texte alternatif](Photos pour le Markdown/Essai_1.png "Essai 1")
+## Avancement du format du post
 
 ![Texte alternatif](Photos pour le Markdown/Essai_2.png "Essai 2")
+## Avancement du format du post
+
 ![Texte alternatif](Photos pour le Markdown/Essai_3.png "Essai 3")
+
+## Avancement du format du post
+
 ![Texte alternatif](Photos pour le Markdown/Essai_4.png "Essai 4")
+
+## Avancement du format du post
+
 ![Texte alternatif](Photos pour le Markdown/Essai_5.png "Essai 5")
+
+## Avancement du format du post
+
+
 ![Texte alternatif](Photos pour le Markdown/Essai_6.png "Essai 6")
 
 ## La touche d'originalité
@@ -125,12 +139,25 @@ commentaires_perdants = {
 
 ## Let's practice !
 
+- Publication des résultats du 31 mars 2024
+- Explication des étapes pas à pas
+
+## Liste des problèmes rencontrés
+
+
+
 ## Points forts
 
+- Facilité d'exécution
+- Automatisation de la collecte de données
+- Posts sur Reddit
 
 
-## Points faibles à améliorer
-Comme chaque équipe fait 19 marches, il y a potentiellement 19 défaites ou victoires. Rajouter des blagues.
+## Points faibles/Améliorations possibles
+- Comme chaque équipe fait 19 marches, il y a potentiellement 19 défaites ou victoires. Rajouter des blagues.
+- Rajout des prévisions sur les scores avant les matchs.
+- Améliorer l'automatisation
+- Attention au bannissement du compte...
 
 
 ## Conclusion
