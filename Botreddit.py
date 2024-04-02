@@ -236,7 +236,7 @@ def check_for_new_data_and_post_on_reddit():
     Function to check for new match data and post on Reddit.
     """
     # Specify the path to the existing Excel file
-    file_path = "/Users/sarahmehiyddine/Desktop/Cours/Magistère/M1/S2/Programmation/base.xlsx"
+    file_path = "/Users/zoesommer/Documents/FAC M1/S2/PP/Résultat_Match/match_stats.xlsx"
 
     # Scrape new match details
     new_match_data_list = []
@@ -277,11 +277,11 @@ def post_match_results_on_reddit(resultats):
     resultats (DataFrame): The DataFrame containing match results.
     """
     # Initialize PRAW with your credentials
-    reddit = praw.Reddit(client_id='9__BS3an82QsQP3fCWSVbg',
-                         client_secret='UIR6x3qj90I-gMwzGLQtrTWD3C5zbQ',
-                         user_agent='foot',
-                         username="SarahProScrapping",
-                         password="ScrappingForLife123")
+    reddit = praw.Reddit(client_id='bQ3mcMhH90oqM4Amni93Yg',
+                         client_secret='NZXa7P7qEkcHN4j0O8aJbp7v52Us6w',
+                         user_agent='GigaFootM1PP',
+                         username="zoepalacios47",
+                         password="Petunia2024!!")
     
     # Specify the subreddit
     subreddit = reddit.subreddit('footballPROJECT')
@@ -334,7 +334,7 @@ def post_match_results_on_reddit(resultats):
         post_content += match_details
     
     # Submit the post
-    subreddit.submit(title, selftext=post_content.strip(), flair_id='09395e38-f03c-11ee-a1b7-96388074f05a')
+    subreddit.submit(title, selftext=post_content.strip(), flair_id=' fbd5a700-f0fa-11ee-b2fc-66ed8fc74fea')
 
 # Execute the function to check for new data and post on Reddit
 check_for_new_data_and_post_on_reddit()
