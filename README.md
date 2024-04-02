@@ -32,6 +32,13 @@ ii) Par la suite, il faudra lancer le code `Botreddit.py`, cela générera autom
 
 iii) N'oubliez pas d'installer toutes les bibliothèques nécessaires : vous pouvez le faire en utilisant `pip install`.
 
+## Fichiers supplémentaires
+
+Vous trouverez également sur notre github un dossier nommé `Diaporama` contenant :
+
+i) Le fichier `Presentation.Rmd` qui contient le code concernant la diapositive.
+ii) Le fichier `Presentation.pdf` contenant les slides de présentation.
+
 ## Bibliothèques et logiciels utilisés
 
 Le projet utilise les bibliothèques suivantes :
