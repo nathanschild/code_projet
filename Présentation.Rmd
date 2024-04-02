@@ -1,6 +1,6 @@
 ---
 title: "Automatisation de la publication des résultats de la Premier League sur Reddit"
-author: "Mehiydinne Sarah, Schild Nathan & Sommer Zoé"
+author: "Mehiyddine Sarah, Schild Nathan & Sommer Zoé"
 date: "2024-03-30"
 output: beamer_presentation
 ---
@@ -112,14 +112,6 @@ def check_for_new_data_and_post_on_reddit():
 
 ![Texte alternatif](Photos pour le Markdown/Essai_4.png "Essai 4")
 
-## Avancement du format du post
-
-![Texte alternatif](Photos pour le Markdown/Essai_5.png "Essai 5")
-
-## Avancement du format du post
-
-
-![Texte alternatif](Photos pour le Markdown/Essai_6.png "Essai 6")
 
 ## La touche d'originalité
 - Une idée a été d'accompagner chaque résultat par un petit commentaire lié aux noms des équipes.
@@ -135,7 +127,13 @@ commentaires_perdants = {
 
 
 ```
+## Avancement du format du post
 
+![Texte alternatif](Photos pour le Markdown/Essai_5.png "Essai 5")
+
+## Avancement du format du post
+
+![Texte alternatif](Photos pour le Markdown/Essai_6.png "Essai 6")
 
 ## Let's practice !
 
@@ -144,13 +142,14 @@ commentaires_perdants = {
 
 ## Liste des problèmes rencontrés
 
+- BANNISSEMENT : problème avec la publication de photos avec le post.
 
 
 ## Points forts
 
 - Facilité d'exécution
 - Automatisation de la collecte de données
-- Posts sur Reddit
+- Posts sur Reddit : personnalisation à l'infini
 
 
 ## Points faibles/Améliorations possibles
