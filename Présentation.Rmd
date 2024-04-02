@@ -15,7 +15,6 @@ knitr::opts_chunk$set(echo = FALSE)
 
 - Ce projet vise à automatiser la publication des résultats de la Premier League.
   - La publication se fait sur le subreddit suivant : <https://www.reddit.com/r/footballM1SE/>.
-  ![Texte alternatif](Photos pour le Markdown/QR_code.png "Accéder du SubReddit")
   - Ce sont les résultats concernant la saison 2023-2024.
 - Les posts sont publiés chaque jour.
 
@@ -28,29 +27,84 @@ knitr::opts_chunk$set(echo = FALSE)
   - Le code concernant la partie création du bot reddit.
 - Nous allons expliciter les étapes les plus importantes du code.
 
-## La partie scrapping
+## Le scrapping : étape 1
 
-- Les données des matchs proviennent du site suivant <https://www.skysports.com/premier-league>
-- Il a fallu extraire les noms des équipes, le score, la date et statistiques associées aux matchs.
-- Nous avons défini une fonction spécifique pour chaque information, voir exemple ci-dessous.
+- On a dans un premier temps déterminé l'URL que l'on allait utiliser : <https://www.skysports.com/football/burnley-vs-manchester-city/stats/>
+- Base commune du lien, il suffit de changer le numéro à la fin
+ 
+## Le scrapping : étape 1 
 
-```{python,echo=T}
-def extract_match_date(soup):
+```{python,echo=T,error=T}
+base_url = 'https://www.skysports.com/football/burnley-vs-manchester-city/stats/'
+match_number = 482591
+while match_number <= 482884:
+        match_url = base_url + f"{match_number}/"
+        match_data = scrape_match_details(match_url)
+        match_data_list.append(match_data)
 
-  match_date_tag = soup.find('time', {'class': 'sdc-site-match-header__detail-time'})
-  return match_date_tag.get('aria-label').split(',')[1].strip() if match_date_tag else None
+        match_number += 1
 ```
 
-## La partie scrapping
+## Le scrapping : premier problème
+
+- Le site choisi initialement était : https://www.espn.co.uk
+- Mais les balises HTML étaient les mêmes pour l'équipe à domicile et l'équipe extérieure
+- 2 solutions : complexifier le code ou changer de site
+
+## Le scrapping : premier problème
+
+- Complexifier le code : considérer que la première statistique trouvée correspond à celle de l'équipe à domicile
+
+```{python,error=T,echo=T}
+for match_container in match_containers:
+  home_team_score_element = 
+  match_container.select_one('.ScoreCell_Score--scoreboard')
+    home_team_score = 
+    home_team_score_element.text.strip() 
+    if 
+    home_team_score_element else 'N/A'
+
+    away_team_scores = 
+    match_container.select('.ScoreCell_Score--scoreboard')
+    away_team_score = 
+    away_team_scores[-1].text.strip() 
+```
+
+## Le scrapping : premier problème
+
+ ![code HTML](Photos pour le Markdown/div.png "HTML")
+
+## Le scrapping : premier problème
+
+- On a finalement changé de site car les balises étaient plus explicites
+
+ ![code HTML](Photos pour le Markdown/div2.png "HTML")
+
+## Le scrapping : étape 2 
+
+- Il a fallu extraire les noms des équipes, le score, la date et statistiques associées aux matchs.
+- Nous avons défini une fonction spécifique pour chaque information, voir exemple ci-dessous.
+- Praticité du site SkySport
+
+```{python,echo=T,error=T,warning=F}
+def extract_scores(soup):
+  sh_tag = 
+  soup.find('span', {'data-update': 'score-home'})
+  sa_tag = 
+  soup.find('span', {'data-update': 'score-away'})
+   return (sh_tag.text.strip() if sh_tag else None,
+           sa_tag.text.strip() if sa_tag else None)
+```
+
+## Le scrapping : étape 2
 
 - On définit ensuite la fonction 'main' qui va permettre de stocker les informations relatives aux matchs. 
 
-```{python,echo=T}
+```{python,echo=T,error=T,warning=F}
 
 def main():
 
     match_number = 482591
-    
     match_data_list = []
 
     while match_number <= 482884:
@@ -61,7 +115,7 @@ def main():
         match_number += 1
 ```
 
-## La partie scrapping 
+## Le scrapping : étape 3 
 
 - Pour finir cette partie, on stocke tout dans un fichier excel :
 
@@ -77,8 +131,11 @@ file_path = os.path.join(directory_path,
 ## La création du bot reddit
 
 - Il a d'abord fallu créer une application reddit 
-  - Pour cela => <https://www.reddit.com/prefs/apps>
+sur le site <https://www.reddit.com/prefs/apps>
+   ![Création de l'appli](Photos pour le Markdown/Capture d’écran 2024-04-02 à 18.12.11.png "Création de l'appli")
 - Ensuite, il a fallu créer un subreddit puis utiliser la bibliothèque 'praw".
+
+## La création du bot reddit
 
 ```{python,error=T,warning=F,echo=T}
 
@@ -88,10 +145,16 @@ reddit = praw.Reddit(client_id='/////',
                      username="/////",
                      password="/////")
 ```
+## La création du bot reddit
+
+ ![Infos de l'appli](Photos pour le Markdown/Capture d’écran 2024-04-02 à 18.12.27.png "Infos de l'appli")
 
 ## La création du bot reddit 
 
 - Après avoir créé le bot reddit, il suffit de renseigner les informations que l'on souhaite poster.
+```{python,error=T,warning=F,echo=T}
+def post_match_results_on_reddit():
+```
 - Pour faire en sorte que le bot publie les résultats des nouveaux matchs, il a fallu introduire une autre fonction :
 
 ```{python,error=T,warning=F,echo=T}
@@ -100,18 +163,19 @@ def check_for_new_data_and_post_on_reddit():
 
 ## Avancement du format du post
 
- ![Texte alternatif](Photos pour le Markdown/Essai_1.png "Essai 1")
+ ![Essai 1](Photos pour le Markdown/Essai_1.png "Essai 1")
+ 
 ## Avancement du format du post
 
-![Texte alternatif](Photos pour le Markdown/Essai_2.png "Essai 2")
-## Avancement du format du post
-
-![Texte alternatif](Photos pour le Markdown/Essai_3.png "Essai 3")
+![Essai 2](Photos pour le Markdown/Essai_2.png "Essai 2")
 
 ## Avancement du format du post
 
-![Texte alternatif](Photos pour le Markdown/Essai_4.png "Essai 4")
+![Essai 3](Photos pour le Markdown/Essai_3.png "Essai 3")
 
+## Avancement du format du post
+
+![Essai 4](Photos pour le Markdown/Essai_4.png "Essai 4")
 
 ## La touche d'originalité
 - Une idée a été d'accompagner chaque résultat par un petit commentaire lié aux noms des équipes.
@@ -127,29 +191,36 @@ commentaires_perdants = {
 
 
 ```
-## Avancement du format du post
 
-![Texte alternatif](Photos pour le Markdown/Essai_5.png "Essai 5")
 
 ## Avancement du format du post
 
-![Texte alternatif](Photos pour le Markdown/Essai_6.png "Essai 6")
+![Essai 5](Photos pour le Markdown/Essai_5.png "Essai 5")
+
+## Avancement du format du post
+
+
+![Essai 6](Photos pour le Markdown/Essai_6.png "Essai 6")
+
+## Résultat final de notre subReddit
+
+![Résultat final](Photos pour le Markdown/WhatsApp Image 2024-04-01 at 17.42.42.png "Résultat final")
 
 ## Let's practice !
 
 - Publication des résultats du 31 mars 2024
 - Explication des étapes pas à pas
 
-## Liste des problèmes rencontrés
+## Le gros problème...
 
-- BANNISSEMENT : problème avec la publication de photos avec le post.
-
+- BANNISSEMENT
+![Les reds : la raison du ban](Photos pour le Markdown/WhatsApp Image 2024-04-01 at 17.55.37.png "Ban")
 
 ## Points forts
 
 - Facilité d'exécution
 - Automatisation de la collecte de données
-- Posts sur Reddit : personnalisation à l'infini
+- Posts sur Reddit
 
 
 ## Points faibles/Améliorations possibles
@@ -161,5 +232,12 @@ commentaires_perdants = {
 
 ## Conclusion
 
-
-
+- Ce projet a connu plusieurs chemins différents.
+  - De base, bot sur Dofus, puis prévisions des résultats des matchs pour finalement...
+  - Créer un bot Reddit !
+- Les limites de notre travail sont évidentes
+  - Problème d'automatisation
+  - Code lourd
+- Mais ...
+  - Une expérience enrichissante
+  - Développement de nouvelles compétences
