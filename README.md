@@ -37,6 +37,7 @@ iii) N'oubliez pas d'installer toutes les bibliothèques nécessaires : vous pou
 Vous trouverez également sur notre github un dossier nommé `Diaporama` contenant :
 
 i) Le fichier `Presentation.Rmd` qui contient le code concernant la diapositive.
+
 ii) Le fichier `Presentation.pdf` contenant les slides de présentation.
 
 ## Bibliothèques et logiciels utilisés
